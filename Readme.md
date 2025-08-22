@@ -1,5 +1,6 @@
-# Private DEX Development Specification
-## Hack2Build: Privacy Edition - Stage 1 Submission
+# PrivaSwap
+## Privacy-First Decentralized Exchange on Avalanche C-Chain
+## Hack2Build: Privacy Edition Submission
 
 ### Project Overview
 Build a privacy-focused decentralized exchange using eERC20 encrypted tokens on Avalanche C-Chain. The DEX will enable private trading where balances, trade amounts, and user positions remain confidential while maintaining full decentralization.

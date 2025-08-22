@@ -1,13 +1,18 @@
 import { ethers } from "hardhat";
-import { Contract } from "ethers";
 
 async function main() {
   console.log("🚀 Starting Private DEX deployment...");
 
-  // Get the deployer account
-  const [deployer] = await ethers.getSigners();
-  console.log("Deploying contracts with account:", deployer.address);
-  console.log("Account balance:", ethers.formatEther(await deployer.provider.getBalance(deployer.address)));
+  // Get the deployer account using private key from environment
+  const privateKey = process.env.PRIVATE_KEY;
+  if (!privateKey) {
+    throw new Error("PRIVATE_KEY not found in environment variables");
+  }
+
+  const deployer = new ethers.Wallet(privateKey, ethers.provider);
+  const deployerAddress = await deployer.getAddress();
+  console.log("Deploying contracts with account:", deployerAddress);
+  console.log("Account balance:", ethers.formatEther(await ethers.provider.getBalance(deployerAddress)));
 
   // Deploy MockEERC20 tokens for testing
   console.log("\n📄 Deploying Mock eERC20 tokens...");

@@ -10,13 +10,13 @@ export interface WalletState {
   chainId: number | null;
   
   // Wallet type
-  walletType: 'metamask' | 'core' | null;
+  walletType: 'metamask' | 'core' | 'rabby'| null;
   
   // Loading states
   isConnecting: boolean;
   
   // Actions
-  connectWallet: (walletType: 'metamask' | 'core') => Promise<void>;
+  connectWallet: (walletType: 'metamask' | 'core' | 'rabby') => Promise<void>;
   disconnectWallet: () => void;
   switchToAvalanche: () => Promise<void>;
 }
@@ -44,7 +44,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   isConnecting: false,
 
   // Connect wallet function
-  connectWallet: async (walletType: 'metamask' | 'core') => {
+  connectWallet: async (walletType: 'metamask' | 'core' | 'rabby') => {
     set({ isConnecting: true });
     
     try {
@@ -60,6 +60,11 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         ethereum = (window as any).ethereum;
         if (!ethereum || !ethereum.isAvalanche) {
           throw new Error('Core Wallet is not installed');
+        }
+      } else if (walletType === 'rabby') {
+        ethereum = (window as any).ethereum;
+        if (!ethereum || !ethereum.isRabby) {
+          throw new Error('Rabby Wallet is not installed');
         }
       }
 

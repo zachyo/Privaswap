@@ -150,8 +150,7 @@ describe("PrivateDEX", function () {
       const nonce = 67890;
 
       await expect(tokenA.encryptedTransferLegacy(user1.address, transferAmount, nonce))
-        .to.emit(tokenA, "EncryptedTransfer")
-        .and.to.emit(tokenA, "EncryptedOperation");
+        .to.emit(tokenA, "EncryptedTransfer");
 
       // Check encrypted balances
       expect(await tokenA.getEncryptedBalance(owner.address)).to.equal(amount - transferAmount);

@@ -25,7 +25,7 @@ export default function WalletConnection() {
 
   const isAvalancheTestnet = chainId === 43113;
 
-  const handleConnect = async (type: 'metamask' | 'core') => {
+  const handleConnect = async (type: 'metamask' | 'core' | 'rabby') => {
     try {
       await connectWallet(type);
       setShowWalletOptions(false);
@@ -75,6 +75,15 @@ export default function WalletConnection() {
                   <span className="text-white font-bold text-sm">C</span>
                 </div>
                 <span className="font-medium">Core Wallet</span>
+              </button>
+              <button
+                onClick={() => handleConnect('rabby')}
+                className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">R</span>
+                </div>
+                <span className="font-medium">Rabby</span>
               </button>
             </div>
           </div>
