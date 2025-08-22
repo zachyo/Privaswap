@@ -1,19 +1,6 @@
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
-```
 # PrivaSwap
-## Privacy-First Decentralized Exchange on Avalanche C-Chain
-## Hack2Build: Privacy Edition Submission
+### Privacy-First Decentralized Exchange on Avalanche C-Chain
+### Hack2Build: Privacy Edition Submission
 
 ### Project Overview
 Build a privacy-focused decentralized exchange using eERC20 encrypted tokens on Avalanche C-Chain. The DEX will enable private trading where balances, trade amounts, and user positions remain confidential while maintaining full decentralization.
