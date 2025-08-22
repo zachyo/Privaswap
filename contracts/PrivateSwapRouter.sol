@@ -291,7 +291,7 @@ contract PrivateSwapRouter is ReentrancyGuard, Ownable {
     /**
      * @dev Find direct pool between two tokens
      */
-    function _findDirectPool(address tokenA, address tokenB) internal view returns (bytes32) {
+    function _findDirectPool(address tokenA, address tokenB) internal pure returns (bytes32) {
         // Ensure consistent ordering
         if (tokenA > tokenB) {
             (tokenA, tokenB) = (tokenB, tokenA);
@@ -323,8 +323,7 @@ contract PrivateSwapRouter is ReentrancyGuard, Ownable {
     /**
      * @dev Execute multi-hop swap (simplified)
      */
-    function _executeMultiHopSwap(MultiHopSwapParams calldata params) internal returns (bytes32) {
-        // In a real implementation, this would execute each hop sequentially
+    function _executeMultiHopSwap(MultiHopSwapParams calldata params) internal pure returns (bytes32) {
         // For now, return the minimum expected amount
         return params.encryptedMinAmountOut;
     }
@@ -332,7 +331,7 @@ contract PrivateSwapRouter is ReentrancyGuard, Ownable {
     /**
      * @dev Find multi-hop path (simplified)
      */
-    function _findMultiHopPath(address tokenIn, address tokenOut) internal view returns (SwapPath memory) {
+    function _findMultiHopPath(address tokenIn, address tokenOut) internal pure returns (SwapPath memory) {
         // Simplified implementation - in reality, this would use graph algorithms
         SwapPath memory path;
         path.tokens = new address[](2);

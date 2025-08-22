@@ -115,7 +115,7 @@ export default function Home() {
                   return (
                     <button
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
+                      onClick={() => setActiveTab(tab.id as typeof activeTab)}
                       className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-md font-medium transition-colors ${
                         activeTab === tab.id
                           ? 'bg-white text-blue-600 shadow-sm'

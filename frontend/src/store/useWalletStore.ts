@@ -145,7 +145,8 @@ export const useWalletStore = create<WalletState>((set, get) => ({
             method: 'wallet_addEthereumChain',
             params: [AVALANCHE_TESTNET],
           });
-        } catch (addError) {
+        } catch (e) {
+          console.log(e)
           throw new Error('Failed to add Avalanche network');
         }
       } else {

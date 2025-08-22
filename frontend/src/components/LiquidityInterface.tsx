@@ -39,8 +39,7 @@ export default function LiquidityInterface() {
 
   const handleAmountAChange = (value: string) => {
     setAmountA(value);
-    // In a real implementation, this would calculate the proportional amount for token B
-    // For demo purposes, we'll use a simple 1:2 ratio
+   
     if (tokenAData?.symbol === 'TokenA') {
       setAmountB((parseFloat(value || '0') * 2).toString());
     } else {
@@ -52,14 +51,7 @@ export default function LiquidityInterface() {
     if (!provider || !amountA || !amountB) return;
 
     setIsProcessing(true);
-    try {
-      // Mock pair ID for demo
-      const mockPairId = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
-      
-      // In a real implementation, this would:
-      // 1. Approve tokens for the DEX contract
-      // 2. Call addLiquidity on the DEX contract
-      // 3. Handle the transaction
+    try {     
       
       // For demo, we'll just simulate the process
       await new Promise(resolve => setTimeout(resolve, 2000));

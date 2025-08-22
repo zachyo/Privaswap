@@ -41,7 +41,7 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         address indexed tokenB,
         uint256 fee
     );
-    
+
     event LiquidityDeposited(
         bytes32 indexed poolId,
         address indexed provider,
@@ -49,7 +49,7 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         bytes32 encryptedAmountB,
         uint256 shares
     );
-    
+
     event LiquidityWithdrawn(
         bytes32 indexed poolId,
         address indexed provider,
@@ -57,7 +57,7 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         bytes32 encryptedAmountB,
         uint256 shares
     );
-    
+
     event FeesCollected(
         bytes32 indexed poolId,
         bytes32 encryptedFeeA,
@@ -68,7 +68,7 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
     mapping(bytes32 => PoolInfo) public pools;
     mapping(bytes32 => mapping(address => LPInfo)) public liquidityProviders;
     mapping(address => bool) public authorizedTokens;
-    
+
     bytes32[] public allPools;
     uint256 public constant MINIMUM_LIQUIDITY = 1000;
     uint256 public constant MAX_FEE = 1000; // 10%
@@ -101,7 +101,10 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
     ) external onlyOwner returns (bytes32 poolId) {
         require(tokenA != tokenB, "Identical tokens");
         require(tokenA != address(0) && tokenB != address(0), "Zero address");
-        require(authorizedTokens[tokenA] && authorizedTokens[tokenB], "Unauthorized tokens");
+        require(
+            authorizedTokens[tokenA] && authorizedTokens[tokenB],
+            "Unauthorized tokens"
+        );
         require(fee <= MAX_FEE, "Fee too high");
 
         // Ensure consistent ordering
@@ -141,8 +144,16 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         require(amountA > 0 && amountB > 0, "Amounts must be greater than 0");
 
         // Transfer tokens from user
-        MockEERC20(pool.tokenA).transferFrom(msg.sender, address(this), amountA);
-        MockEERC20(pool.tokenB).transferFrom(msg.sender, address(this), amountB);
+        MockEERC20(pool.tokenA).transferFrom(
+            msg.sender,
+            address(this),
+            amountA
+        );
+        MockEERC20(pool.tokenB).transferFrom(
+            msg.sender,
+            address(this),
+            amountB
+        );
 
         // Calculate shares to mint
         if (pool.totalShares == 0) {
@@ -152,8 +163,10 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
             shares -= MINIMUM_LIQUIDITY; // Lock minimum liquidity
         } else {
             // Calculate proportional shares
-            uint256 sharesA = (amountA * pool.totalShares) / pool.encryptedReserveA;
-            uint256 sharesB = (amountB * pool.totalShares) / pool.encryptedReserveB;
+            uint256 sharesA = (amountA * pool.totalShares) /
+                pool.encryptedReserveA;
+            uint256 sharesB = (amountB * pool.totalShares) /
+                pool.encryptedReserveB;
             shares = Math.min(sharesA, sharesB);
         }
 
@@ -172,9 +185,19 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         lpInfo.lastDeposit = block.timestamp;
 
         // Emit event with encrypted placeholders for privacy
-        bytes32 encryptedAmountA = keccak256(abi.encodePacked(amountA, msg.sender, block.timestamp));
-        bytes32 encryptedAmountB = keccak256(abi.encodePacked(amountB, msg.sender, block.timestamp));
-        emit LiquidityDeposited(poolId, msg.sender, encryptedAmountA, encryptedAmountB, shares);
+        bytes32 encryptedAmountA = keccak256(
+            abi.encodePacked(amountA, msg.sender, block.timestamp)
+        );
+        bytes32 encryptedAmountB = keccak256(
+            abi.encodePacked(amountB, msg.sender, block.timestamp)
+        );
+        emit LiquidityDeposited(
+            poolId,
+            msg.sender,
+            encryptedAmountA,
+            encryptedAmountB,
+            shares
+        );
     }
 
     /**
@@ -214,9 +237,19 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
         MockEERC20(pool.tokenB).transfer(msg.sender, amountB);
 
         // Emit event with encrypted placeholders for privacy
-        bytes32 encryptedAmountA = keccak256(abi.encodePacked(amountA, msg.sender, block.timestamp));
-        bytes32 encryptedAmountB = keccak256(abi.encodePacked(amountB, msg.sender, block.timestamp));
-        emit LiquidityWithdrawn(poolId, msg.sender, encryptedAmountA, encryptedAmountB, sharesToBurn);
+        bytes32 encryptedAmountA = keccak256(
+            abi.encodePacked(amountA, msg.sender, block.timestamp)
+        );
+        bytes32 encryptedAmountB = keccak256(
+            abi.encodePacked(amountB, msg.sender, block.timestamp)
+        );
+        emit LiquidityWithdrawn(
+            poolId,
+            msg.sender,
+            encryptedAmountA,
+            encryptedAmountB,
+            sharesToBurn
+        );
     }
 
     /**
@@ -234,21 +267,28 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
             optimalAmountB = desiredAmountA;
         } else {
             // Calculate optimal amount B to maintain current ratio
-            optimalAmountB = (desiredAmountA * pool.encryptedReserveB) / pool.encryptedReserveA;
+            optimalAmountB =
+                (desiredAmountA * pool.encryptedReserveB) /
+                pool.encryptedReserveA;
         }
     }
 
     /**
      * @dev Get pool information
      */
-    function getPoolInfo(bytes32 poolId) external view returns (PoolInfo memory) {
+    function getPoolInfo(
+        bytes32 poolId
+    ) external view returns (PoolInfo memory) {
         return pools[poolId];
     }
 
     /**
      * @dev Get liquidity provider information
      */
-    function getLPInfo(bytes32 poolId, address provider) external view returns (LPInfo memory) {
+    function getLPInfo(
+        bytes32 poolId,
+        address provider
+    ) external view returns (LPInfo memory) {
         return liquidityProviders[poolId][provider];
     }
 
@@ -262,10 +302,13 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
     /**
      * @dev Calculate share percentage for a liquidity provider
      */
-    function getSharePercentage(bytes32 poolId, address provider) external view returns (uint256) {
+    function getSharePercentage(
+        bytes32 poolId,
+        address provider
+    ) external view returns (uint256) {
         PoolInfo storage pool = pools[poolId];
         LPInfo storage lpInfo = liquidityProviders[poolId][provider];
-        
+
         if (pool.totalShares == 0) return 0;
         return (lpInfo.shares * 1e18) / pool.totalShares;
     }
@@ -296,7 +339,6 @@ contract LiquidityPool is ReentrancyGuard, Ownable {
      * @dev Collect protocol fees (simplified)
      */
     function collectProtocolFees(bytes32 poolId) external onlyOwner {
-        // In a real implementation, this would calculate and transfer protocol fees
         emit FeesCollected(poolId, bytes32(0), bytes32(0));
     }
 }
