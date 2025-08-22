@@ -1,14 +1,18 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "version": 2,
   "framework": "nextjs",
+  "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "devCommand": "npm run dev",
+  "functions": {
+    "app/**/*.{js,ts,tsx}": {
+      "maxDuration": 30
+    }
+  },
   "env": {
-    "NEXT_PUBLIC_PRIVATE_DEX_ADDRESS": "@private_dex_address",
-    "NEXT_PUBLIC_TOKEN_A_ADDRESS": "@token_a_address", 
-    "NEXT_PUBLIC_TOKEN_B_ADDRESS": "@token_b_address",
-    "NEXT_PUBLIC_LIQUIDITY_POOL_ADDRESS": "@liquidity_pool_address",
-    "NEXT_PUBLIC_SWAP_ROUTER_ADDRESS": "@swap_router_address"
+    "NEXT_PUBLIC_PRIVATE_DEX_ADDRESS": "0x1234567890123456789012345678901234567890",
+    "NEXT_PUBLIC_TOKEN_A_ADDRESS": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+    "NEXT_PUBLIC_TOKEN_B_ADDRESS": "0x1111111111111111111111111111111111111111",
+    "NEXT_PUBLIC_LIQUIDITY_POOL_ADDRESS": "0x2222222222222222222222222222222222222222",
+    "NEXT_PUBLIC_SWAP_ROUTER_ADDRESS": "0x3333333333333333333333333333333333333333"
   }
 }
